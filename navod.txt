@@ -5,5 +5,13 @@ pip install django
 sudo apt-get install python3-dev libmysqlclient-dev
 pip install mysqlclient
 sudo apt-get install mysql-server
-python manage.py migrate
 
+python manage.py migrate
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+
+source env/bin/activate
+source deactivate
+
+sudo fuser -k 8000/tcp

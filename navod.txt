@@ -1,0 +1,9 @@
+pip3 install virtualenv
+virtualenv env
+. env/bin/activate
+pip install django
+sudo apt-get install python3-dev libmysqlclient-dev
+pip install mysqlclient
+sudo apt-get install mysql-server
+python manage.py migrate
+

@@ -15,3 +15,8 @@ source env/bin/activate
 source deactivate
 
 sudo fuser -k 8000/tcp
+
+npm install @vue/cli -g
+vue create frontend
+npm install vuetify --save
+killall -9 node

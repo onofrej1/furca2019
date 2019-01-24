@@ -11,7 +11,7 @@
       </v-btn>
     </v-toolbar>
 
-    <v-navigation-drawer clipped  permanent absolute style='top: 65px'>
+    <v-card id="menu">
       <v-list dense class="pt-0">
         <template v-for="(item) in items">
           <v-list-tile :key="item.title">
@@ -22,27 +22,28 @@
             <v-list-tile-content>
               <v-list-tile-title>{{ item.title }}</v-list-tile-title>
             </v-list-tile-content>
-            
           </v-list-tile>
-          <v-divider :key="item.title"></v-divider>
+          <v-divider :key="item.id"></v-divider>
         </template>
       </v-list>
-    </v-navigation-drawer>
+    </v-card>
 
-    <v-content>
-      <v-container fluid>
+    <div class="content">
+      <div :key="item.id" v-for="item in data">{{ item.id }}</div>
 
-          <router-link to="/foo">Go to Foo</router-link>
-          <router-link to="/bar">Go to Bar</router-link>
+      <router-link to="/foo">Go to Foo</router-link>
+      <router-link to="/bar">Go to Bar</router-link>
+      {{ name }}
+      <router-view></router-view>
+    </div>
 
-        <router-view></router-view>
-      </v-container>
-    </v-content>
     <v-footer style="border:1px solid lightgray" app></v-footer>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "Admin",
   data() {
@@ -51,10 +52,36 @@ export default {
         { title: "Home", icon: "dashboard" },
         { title: "About", icon: "question_answer" }
       ],
-      right: null
+      right: null,
+      results: [],
     };
+  },
+  computed: {
+    ...mapState(["data", "name"])
+  },
+  mounted() {
+    axios.get("http://localhost:8000/posts").then(response => {
+      this.results = response.data;
+      this.$store.commit("setData", response.data);
+    });
   }
 };
 </script>
 <style>
+#menu {
+  width: 300px;
+  height: 100%;
+  top: 65px;
+  left: 0px;
+  z-index: 1;
+  margin-right: 10px;
+  position: fixed;
+  overflow-x: hidden;
+}
+
+.content {
+  margin-left: 300px;
+  margin-top: 65px;
+  padding: 10px;
+}
 </style>

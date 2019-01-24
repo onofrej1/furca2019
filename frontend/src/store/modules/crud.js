@@ -1,25 +1,24 @@
 
 // initial state
 const state = {
-  all: []
+  data: [],
+  name: 'vue',
 }
 
 // getters
 const getters = {}
 
 // actions
-const actions = {
-  fetchData({ commit }) {
-    
-      commit('setData', [{'aaa': 'bbb'}, {'ccc': 'dddd'}]);
-    
+/*const actions = {
+  fetchData({ commit }) {  
+      commit('setData', [{'aaa': 'bbb'}, {'ccc': 'dddd'}]);  
   }
-}
+}*/
 
 // mutations
 const mutations = {
   setData (state, data) {
-    state.all = data
+    state.data = data
   },
 
   decrementProductInventory (state, { id }) {
@@ -31,6 +30,6 @@ const mutations = {
 export default {
   state,
   getters,
-  actions,
+  //actions,
   mutations
 }

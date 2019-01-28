@@ -12,13 +12,13 @@ const user = {
   ]
 }
 
-const article = {
+const posts = {
   title: 'Articles',
   form: [
     { name: 'title', type: 'text' },
     { name: 'author', type: 'text' },
-    { name: 'content', type: 'editor' },
-    { name: 'tags', type: 'pivotRelation', resourceTable: 'tag', show: 'title', label: 'Tags' },
+    //{ name: 'content', type: 'editor' },
+    //{ name: 'tags', type: 'pivotRelation', resourceTable: 'tag', show: 'title', label: 'Tags' },
   ],
   list: [
     { field: 'title' },
@@ -73,6 +73,6 @@ const tag = {
   ]
 };
 
-const models = { user, page, tag, article, menuItem, hamburg };
+const models = { user, page, tag, posts, menuItem, hamburg };
 
 export default models;

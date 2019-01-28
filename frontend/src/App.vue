@@ -1,7 +1,7 @@
 <template>
-  <v-app>
+ 
     <CrudAdmin/>
-  </v-app>
+  
 </template>
 
 <script>

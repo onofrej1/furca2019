@@ -1,82 +1,93 @@
 <template>
-  <v-container fluid>
-    <v-layout row>
-      <v-flex v-if="activeForm" offset-md3 md6>
-        <v-card class="elevation-12">
-          <v-toolbar>
-            <v-toolbar-title>{{ activeResource }}</v-toolbar-title>
-          </v-toolbar>
+  <dark-layout>
+    <template slot="content">
+      <v-container fluid>
+        <v-layout row>
+          <v-flex v-if="activeForm" offset-md3 md6>
+            <v-card class="elevation-12">
+              <v-toolbar>
+                <v-toolbar-title>{{ activeResource }}</v-toolbar-title>
+              </v-toolbar>
 
-          <v-card-text>
-            <v-form>
-              <template v-for="field in form">
-                <v-text-field
-                  :key="field.name"
-                  v-if="field.type==='text'"
-                  v-model="model[field.name]"
-                  :label="field.label || field.name"
-                  required
-                ></v-text-field>
+              <v-card-text>
+                <v-form>
+                  <template v-for="field in form">
+                    <v-text-field
+                      :key="field.name"
+                      v-if="field.type==='text'"
+                      v-model="model[field.name]"
+                      :label="field.label || field.name"
+                      required
+                    ></v-text-field>
 
-                <v-select
-                  v-if="field.type==='relation'"
-                  :key="field.name"
-                  :items="getOptions(field.resourceTable, field.show)"
-                  v-model="model[field.name]"
-                  :label="field.label || field.name"
-                ></v-select>
+                    <v-select
+                      v-if="field.type==='relation'"
+                      :key="field.name"
+                      :items="getOptions(field.resourceTable, field.show)"
+                      v-model="model[field.name]"
+                      :label="field.label || field.name"
+                    ></v-select>
+                  </template>
+                </v-form>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click="onSubmit">Save</v-btn>
+                <v-btn>Cancel</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+
+        <v-flex v-if="!activeForm" offset-md1 md10>
+          <v-card>
+            <v-card-title>
+              <v-btn small color="primary" @click="createItem({})">
+                <v-icon>add</v-icon>Add new
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                append-icon="search"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+
+            <router-link to="/crud/posts">Go to Foo</router-link>
+            <router-link to="/crud/article">Go to Bar</router-link>
+
+            <v-data-table
+              d-block
+              :headers="table"
+              :items="activeResourceData"
+              hide-actions
+              class="elevation-1"
+            >
+              <template slot="items" slot-scope="props">
+                <td
+                  class="text-xs-right"
+                  :key="field.value"
+                  v-for="field in table"
+                >{{ field.render ? field.render(props) : props.item[field.value] }}</td>
+                <td class="text-xs-right">
+                  <v-btn small color="primary" @click="editItem(props.item)">Edit</v-btn>
+                  <v-btn small color="error">Delete</v-btn>
+                </td>
               </template>
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-
-    <v-flex v-if="!activeForm" offset-md1 md10>
-      <v-card>
-        <v-card-title>
-          <v-btn small color="primary" @click="createItem({})">
-            <v-icon>add</v-icon>Add new
-          </v-btn>
-          <v-spacer></v-spacer>
-          <v-text-field
-            v-model="search"
-            append-icon="search"
-            label="Search"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-card-title>
-
-        <router-link to="/crud/page">Go to Foo</router-link>
-      <router-link to="/crud/article">Go to Bar</router-link>
-
-        <v-data-table
-          d-block
-          :headers="table"
-          :items="activeResourceData"
-          hide-actions
-          class="elevation-1"
-        >
-          <template slot="items" slot-scope="props">
-            <td
-              class="text-xs-right"
-              :key="field.value"
-              v-for="field in table"
-            >{{ field.render ? field.render(props) : props.item[field.value] }}</td>
-            <td class="text-xs-right">
-              <v-btn small color="primary" @click="editItem(props.item)">Edit</v-btn>
-              <v-btn small color="error">Delete</v-btn>
-            </td>
-          </template>
-        </v-data-table>
-      </v-card>
-    </v-flex>
-  </v-container>
+            </v-data-table>
+          </v-card>
+        </v-flex>
+      </v-container>
+    </template>
+  </dark-layout>
 </template>
 
 <script>
 import CrudModels from "./../CrudModels";
+import DarkLayout from "./DarkLayout";
 
 import { mapState, mapActions } from "vuex";
 
@@ -93,6 +104,7 @@ export default {
     };
   },
   components: {
+    DarkLayout
     //editor: Editor,
     //quillEditor
   },
@@ -110,7 +122,7 @@ export default {
     $route() {
       let resource = this.$route.params.resource;
       this.activeForm = false;
-      console.log('resource'+resource);
+      console.log("resource" + resource);
       this.setActiveResource(resource);
       this.makeTable();
       this.fetchResourceData(resource);

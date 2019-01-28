@@ -4,7 +4,7 @@ import Vuetify from 'vuetify'
 import store from './store'
 import VueRouter from 'vue-router'
 
-import Test from "./components/Test.vue";
+//import Test from "./components/Test.vue";
 import CrudAdmin from "./components/CrudAdmin.vue";
 import HelloWorld from "./components/HelloWorld.vue";
 

@@ -1,24 +1,31 @@
-
+const axios = require('axios');
 // initial state
 const state = {
   data: [],
-  name: 'vue',
+  meno: 'vue',
 }
 
 // getters
 const getters = {}
 
 // actions
-/*const actions = {
-  fetchData({ commit }) {  
-      commit('setData', [{'aaa': 'bbb'}, {'ccc': 'dddd'}]);  
+const actions = {
+  fetchData({ commit }) { 
+    console.log('fetch');
+    axios.get("http://localhost:8000/posts").then(response => {
+      this.results = response.data;
+      commit("setData", response.data);
+    });
+
+      //commit('setData', [{'aaa': 'bbb'}, {'ccc': 'dddd'}]);  
   }
-}*/
+}
 
 // mutations
 const mutations = {
   setData (state, data) {
-    state.data = data
+    state.data = data;
+    console.log(state.data);
   },
 
   decrementProductInventory (state, { id }) {
@@ -28,8 +35,9 @@ const mutations = {
 }
 
 export default {
+  namespaced: true,
   state,
   getters,
-  //actions,
+  actions,
   mutations
 }

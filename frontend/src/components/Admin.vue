@@ -33,7 +33,7 @@
 
       <router-link to="/foo">Go to Foo</router-link>
       <router-link to="/bar">Go to Bar</router-link>
-      {{ name }}
+      name{{ meno }}
       <router-view></router-view>
     </div>
 
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Admin",
@@ -57,13 +57,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["data", "name"])
+    ...mapState('crud', ["data", "meno"])
+  },
+  methods: {
+    //...mapActions('crud')
   },
   mounted() {
-    axios.get("http://localhost:8000/posts").then(response => {
-      this.results = response.data;
-      this.$store.commit("setData", response.data);
-    });
+    this.$store.dispatch('crud/fetchData');
   }
 };
 </script>

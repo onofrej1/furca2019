@@ -5,6 +5,7 @@ import store from './store'
 import VueRouter from 'vue-router'
 
 import Test from "./components/Test.vue";
+import CrudAdmin from "./components/CrudAdmin.vue";
 import HelloWorld from "./components/HelloWorld.vue";
 
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
@@ -15,9 +16,18 @@ Vue.use(VueRouter)
 
 Vue.config.productionTip = false
 
-const routes = [
-  { path: '/foo', component: Test },
-  { path: '/bar', component: HelloWorld }
+const routes = [{
+    path: '/crud/:resource',
+    name: 'crud',
+    component: CrudAdmin,
+    meta: {
+      adminLayout: true,
+    }
+  },
+  {
+    path: '/bar',
+    component: HelloWorld
+  }
 ];
 
 const router = new VueRouter({

@@ -1,16 +1,17 @@
 <template>
   <v-app>
-    <Admin/>
+    <CrudAdmin/>
   </v-app>
 </template>
 
 <script>
-import Admin from "./components/Admin.vue";
+//import Admin from "./components/Admin.vue";
+import CrudAdmin from "./components/CrudAdmin.vue";
 
 export default {
   name: "app",
   components: {
-    Admin
+    CrudAdmin
   }
 };
 </script>

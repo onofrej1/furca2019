@@ -1,5 +1,5 @@
 <template>
-  <dark-layout>
+  <dark-layout :models="this.models">
     <template slot="content">
       <v-container fluid>
         <v-layout row>

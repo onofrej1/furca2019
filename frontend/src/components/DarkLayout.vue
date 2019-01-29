@@ -1,27 +1,45 @@
 <template>
-  <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" clipped fixed app>
-      <v-list dense>
-        <v-list-tile @click="setModel(modelName)" :key="modelName" v-for="modelName in modelNames">
-          <v-list-tile-action>
-            <v-icon>dashboard</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>{{ modelName }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-    </v-navigation-drawer>
-    <v-toolbar app fixed clipped-left color="indigo">
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+  <v-app>
+    <v-toolbar dark color="primary" app>
+      <v-toolbar-side-icon></v-toolbar-side-icon>
+
       <v-toolbar-title class="white--text">O5 Bežecký klub Furča</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>search</v-icon>
+      </v-btn>
     </v-toolbar>
-    <v-content>
-      <slot name="content"></slot>
-    </v-content>
-    <v-footer app fixed>
-      <span>&copy; 2017</span>
-    </v-footer>
+
+    <v-card id="menu">
+      <v-list dense class="pt-0">
+        <template v-for="(item) in modelNames">
+          <v-list-tile :key="item">
+            <v-list-tile-action>
+              <v-icon></v-icon>
+            </v-list-tile-action>
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{ item }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          
+        </template>
+      </v-list>
+    </v-card>
+
+    <div class="content">
+      <slot name="content">
+        <router-view></router-view>
+      </slot>
+
+      <router-link to="/foo">Go to Foo</router-link>
+      <router-link to="/bar">Go to Bar</router-link>
+
+      
+    </div>
+
+    <v-footer style="border:1px solid lightgray" app></v-footer>
   </v-app>
 </template>
 
@@ -52,7 +70,21 @@ export default {
 };
 </script>
 <style>
-.content {
-  margin: 0px !important;
+#menu {
+  width: 300px;
+  height: 100%;
+  top: 65px;
+  left: 0px;
+  z-index: 1;
+  margin-right: 10px;
+  position: fixed;
+  overflow-x: hidden;
 }
+
+.content {
+  margin-left: 300px;
+  margin-top: 65px;
+  padding: 10px;
+}
+
 </style>

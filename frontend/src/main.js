@@ -8,13 +8,17 @@ import VueRouter from 'vue-router'
 import CrudAdmin from "./components/CrudAdmin.vue";
 import HelloWorld from "./components/HelloWorld.vue";
 
+
+
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 //import '~vuetify/src/stylus/main' // Ensure you are using stylus-loader
+
+
 
 Vue.use(Vuetify)
 Vue.use(VueRouter)
 
-Vue.config.productionTip = false
+//Vue.config.productionTip = false
 
 const routes = [{
     path: '/crud/:resource',
@@ -35,7 +39,8 @@ const router = new VueRouter({
 });
 
 new Vue({
+  el: '#app',
   store: store,
   router,
   render: h => h(App),
-}).$mount('#app')
+})//.$mount('#app')

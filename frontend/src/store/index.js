@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     apiUrl: "http://localhost:8000",
-    activeResource: "page",
+    activeResource: "posts",
     resourceData: {}
   },
   getters: {

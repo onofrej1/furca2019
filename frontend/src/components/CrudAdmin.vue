@@ -1,88 +1,108 @@
 <template>
-  <dark-layout :models="this.models">
-    <template slot="content">
-      <v-container fluid>
-        <v-layout row>
-          <v-flex v-if="activeForm" offset-md3 md6>
-            <v-card class="elevation-12">
-              <v-toolbar>
-                <v-toolbar-title>{{ activeResource }}</v-toolbar-title>
-              </v-toolbar>
+    <v-container fluid>
+      <v-layout row>
+        <v-flex v-if="activeForm">
+          <v-card class="elevation-12">
+            <v-toolbar>
+              <v-toolbar-title>{{ activeResource }}</v-toolbar-title>
+            </v-toolbar>
 
-              <v-card-text>
-                <v-form>
-                  <template v-for="field in form">
-                    <v-text-field
-                      :key="field.name"
-                      v-if="field.type==='text'"
-                      v-model="model[field.name]"
-                      :label="field.label || field.name"
-                      required
-                    ></v-text-field>
+            <v-card-text>
+              <v-form>
+                <template v-for="field in form">
+                  <v-text-field
+                    :key="field.name"
+                    v-if="field.type==='text'"
+                    v-model="model[field.name]"
+                    :label="field.label || field.name"
+                    required
+                  ></v-text-field>
 
-                    <v-select
-                      v-if="field.type==='relation'"
-                      :key="field.name"
-                      :items="getOptions(field.resourceTable, field.show)"
-                      v-model="model[field.name]"
-                      :label="field.label || field.name"
-                    ></v-select>
-                  </template>
-                </v-form>
-              </v-card-text>
+                  <v-select
+                    v-if="field.type==='relation'"
+                    :key="field.name"
+                    :items="getOptions(field.resourceTable, field.show)"
+                    v-model="model[field.name]"
+                    :label="field.label || field.name"
+                  ></v-select>
+                </template>
+              </v-form>
+            </v-card-text>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click="onSubmit">Save</v-btn>
-                <v-btn>Cancel</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
-
-        <v-flex v-if="!activeForm" offset-md1 md10>
-          <v-card>
-            <v-card-title>
-              <v-btn small color="primary" @click="createItem({})">
-                <v-icon>add</v-icon>Add new
-              </v-btn>
+            <v-card-actions>
               <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Search"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-card-title>
-
-            <router-link to="/crud/posts">Go to Foo</router-link>
-            <router-link to="/crud/article">Go to Bar</router-link>
-
-            <v-data-table
-              d-block
-              :headers="table"
-              :items="activeResourceData"
-              hide-actions
-              class="elevation-1"
-            >
-              <template slot="items" slot-scope="props">
-                <td
-                  class="text-xs-right"
-                  :key="field.value"
-                  v-for="field in table"
-                >{{ field.render ? field.render(props) : props.item[field.value] }}</td>
-                <td class="text-xs-right">
-                  <v-btn small color="primary" @click="editItem(props.item)">Edit</v-btn>
-                  <v-btn small color="error">Delete</v-btn>
-                </td>
-              </template>
-            </v-data-table>
+              <v-btn color="primary" @click="onSubmit">Save</v-btn>
+              <v-btn>Cancel</v-btn>
+            </v-card-actions>
           </v-card>
         </v-flex>
-      </v-container>
-    </template>
-  </dark-layout>
+      </v-layout>
+
+      <v-flex v-if="!activeForm" md12>
+        <v-card>
+          <v-card-title>
+            <v-btn small color="primary" @click="createItem({})">
+              <v-icon>add</v-icon>Add new
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-title>
+
+          <v-container>
+            <v-layout row wrap justify-start>
+              <template v-for="filter in resourceSettings.filter">
+                <v-flex :key="filter.field" md4>
+                  <v-select
+                    v-if="filter.type==='select'"
+                    :key="filter.field"
+                    :items="getFilterOptions(activeResourceData, filter.field)"
+                    v-model="search[filter.field]"
+                    append-icon="search"
+                    :label="filter.label"
+                    style="width:90%"
+                  ></v-select>
+
+                  <v-text-field
+                    v-if="filter.type==='text'"
+                    :key="filter.field"
+                    v-model="search[filter.field]"
+                    append-icon="search"
+                    :label="filter.label"
+                    style="width:90%"
+                  ></v-text-field>
+                </v-flex>
+              </template>
+            </v-layout>
+          </v-container>
+ 
+          <!--<router-link to="/crud/posts">Go to Foo</router-link>
+          <router-link to="/crud/article">Go to Bar</router-link>-->
+          <v-data-table
+            v-if="resourceSettings"
+            d-block
+            :headers="table"
+            :items="filteredItems"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td
+                class="text-xs-right"
+                :key="field.value"
+                v-for="field in table"
+              >{{ field.render ? field.render(props) : props.item[field.value] }}</td>
+              <td class="text-xs-right">
+                <v-icon color="primary" @click="editItem(props.item)">edit</v-icon>
+                <v-icon color="red">delete</v-icon>
+              </td>
+            </template>
+
+            <template slot="footer">
+             <component v-bind:is="tableFooter"></component>
+              </template>
+          </v-data-table>
+        </v-card>
+      </v-flex>
+    </v-container>
 </template>
 
 <script>
@@ -100,7 +120,8 @@ export default {
       table: [],
       form: [],
       model: {},
-      search: ""
+      search: {},
+      appComponents: []
     };
   },
   components: {
@@ -111,10 +132,36 @@ export default {
   computed: {
     ...mapState(["activeResource", "resourceData"]),
     activeResourceData: function() {
-      return this.resourceData[this.activeResource];
+      return this.resourceData[this.activeResource] || [];
     },
     resourceSettings: function() {
       return this.models[this.activeResource];
+    },
+    tableFooter: function() {
+      //console.log(this.resourceSettings.footer);
+      return this.resourceSettings.footer;
+    },
+    filteredItems: function() {
+      var data = this.activeResourceData;
+      var search = this.search;
+      if (!data) {
+        return [];
+      }
+      this.resourceSettings.filter.forEach(function(filter) {
+        data = data.filter(item => {
+          var searchValue = search[filter.field];
+          if (!searchValue) {
+            return true;
+          }
+          var value = item[filter.field];
+          if (filter.op === "contains") {
+            return value.includes(searchValue);
+          }
+
+          return value === searchValue;
+        });
+      });
+      return data;
     }
   },
   watch: {
@@ -122,7 +169,6 @@ export default {
     $route() {
       let resource = this.$route.params.resource;
       this.activeForm = false;
-      console.log("resource" + resource);
       this.setActiveResource(resource);
       this.makeTable();
       this.fetchResourceData(resource);
@@ -145,6 +191,16 @@ export default {
           };
         });
       return options;
+    },
+    getFilterOptions: function(data, field) {
+      var filterOptions = data.map(row => {
+        return {
+          value: row[field],
+          text: row[field]
+        };
+      });
+      filterOptions.unshift({ value: null, text: "" });
+      return filterOptions;
     },
     createItem: function() {
       this.model = {};

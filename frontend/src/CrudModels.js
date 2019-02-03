@@ -1,5 +1,16 @@
+import Vue from 'vue'
 
-const user = {
+var footer = {
+  name: 'my-footer',
+	template: '<b>footer</b>' 
+};
+
+var footer2 = {
+  name: 'my-footer',
+	template: '<p>footer2</p>' 
+};
+
+/*const user = {
   title: 'Users',
   form: [
     { name: 'name', type: 'text' },
@@ -10,23 +21,53 @@ const user = {
     { field: 'name', label: 'Name' },
     { field: 'email', label: 'Email' },
   ]
-}
+}*/
+
 
 const posts = {
-  title: 'Articles',
+  title: 'Posts',
+  filter: [
+    { field: 'title', type: 'select', 'op': 'eq', label:'Title'},
+    { field: 'text', type: 'text', 'op': 'contains', label: 'Text'}
+  ],
   form: [
     { name: 'title', type: 'text' },
     { name: 'author', type: 'text' },
+    { name: 'text', type: 'text' },
     //{ name: 'content', type: 'editor' },
     //{ name: 'tags', type: 'pivotRelation', resourceTable: 'tag', show: 'title', label: 'Tags' },
   ],
   list: [
     { field: 'title' },
     { field: 'author' },
-  ]
+    { field: 'text' },
+   /* { render: props => {
+      console.log(props);
+      return 'aaa'+ props.item.text;
+    } },*/
+  ],
+  footer: footer2,
 }
 
-const menuItem = {
+const users = {
+  title: 'Users',
+  filter: [
+    { field: 'username', type: 'text', 'op': 'eq'}
+  ],
+  form: [
+    { name: 'username', type: 'text' },
+    { name: 'email', type: 'text' },
+    //{ name: 'content', type: 'editor' },
+    //{ name: 'tags', type: 'pivotRelation', resourceTable: 'tag', show: 'title', label: 'Tags' },
+  ],
+  list: [
+    { field: 'username' },
+    { field: 'email' },
+  ],
+  footer: footer,
+}
+
+/*const menuItem = {
   title: 'Menu',
   form: [
     { label: 'Title', name: 'title', type: 'text' },
@@ -71,8 +112,8 @@ const tag = {
   list: [
     { field: 'title', label: 'Title' }
   ]
-};
+};*/
 
-const models = { user, page, tag, posts, menuItem, hamburg };
+const models = { users, posts };
 
 export default models;

@@ -1,8 +1,7 @@
 <template>
-  <v-app>
+  <div>
     <v-toolbar dark color="primary" app>
       <v-toolbar-side-icon></v-toolbar-side-icon>
-
       <v-toolbar-title class="white--text">O5 Bežecký klub Furča</v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -20,27 +19,22 @@
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{ item }}</v-list-tile-title>
+              <v-list-tile-title @click="setModel(item)">{{ item }}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          
         </template>
       </v-list>
     </v-card>
 
     <div class="content">
-      <slot name="content">
-        <router-view></router-view>
-      </slot>
+      <router-view></router-view>
 
       <router-link to="/foo">Go to Foo</router-link>
       <router-link to="/bar">Go to Bar</router-link>
-
-      
     </div>
 
     <v-footer style="border:1px solid lightgray" app></v-footer>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -86,5 +80,4 @@ export default {
   margin-top: 65px;
   padding: 10px;
 }
-
 </style>
